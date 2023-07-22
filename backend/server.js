@@ -11,9 +11,7 @@ app.get("/", (req,res) => {
     res.send("API is Successfully")
 })
 
-app.get("/api/chat", (req,res) => {
-    res.send(chats)
-})
+app.use("/api/user", userRoutes);
 
 const PORT = process.env.PORT;
 
