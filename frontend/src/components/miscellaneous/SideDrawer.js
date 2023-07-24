@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from "@chakra-ui/button";
-import { Box,Text } from '@chakra-ui/layout'
+import { Box,Text } from '@chakra-ui/layout';
+import { Input } from "@chakra-ui/input";
 import { BellIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import { Tooltip } from "@chakra-ui/tooltip";
 import {
@@ -10,12 +11,13 @@ import {
   MenuItem,
   MenuList,
 } from "@chakra-ui/menu";
-import { Avatar, Drawer, DrawerContent, DrawerHeader, DrawerOverlay, useDisclosure } from '@chakra-ui/react';
+import { Avatar, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, useDisclosure, useToast } from '@chakra-ui/react';
 import { ChatState } from '../../Context/ChatProvider';
 import ProfileModal from './ProfileModal';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
-// import { useDisclosure } from '@chakra-ui/hooks';
-
+import axios from "axios";
+import ChatLoading from '../ChatLoading';
+import UserListItem from '../UserAvatar/UserListItem';
 
 const SideDrawer = () => {
   const [search, setSearch] = useState("");
@@ -31,7 +33,75 @@ const SideDrawer = () => {
     localStorage.removeItem("userInfo");
     history.push("/");
   };
+  const toast = useToast();
 
+  const handleSearch = async () => {
+    if (!search) {
+      toast({
+        title: "Please Enter something in search",
+        status: "warning",
+        duration: 5000,
+        isClosable: true,
+        position: "top-left",
+      });
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
+
+      const { data } = await axios.get(`/api/user?search=${search}`, config);
+
+      setLoading(false);
+      setSearchResult(data);
+    } catch (error) {
+      toast({
+        title: "Error Occured!",
+        description: "Failed to Load the Search Results",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom-left",
+      });
+    }
+  };
+
+  const accessChat = async (userId) => {
+    // console.log(userId);
+
+    // try {
+    //   setLoadingChat(true);
+    //   const config = {
+    //     headers: {
+    //       "Content-type": "application/json",
+    //       Authorization: `Bearer ${user.token}`,
+    //     },
+    //   };
+    //   const { data } = await axios.post(`/api/chat`, { userId }, config);
+
+    //   if (!chats.find((c) => c._id === data._id)) setChats([data, ...chats]);
+    //   setSelectedChat(data);
+    //   setLoadingChat(false);
+    //   onClose();
+    // } catch (error) {
+    //   toast({
+    //     title: "Error fetching the chat",
+    //     description: error.message,
+    //     status: "error",
+    //     duration: 5000,
+    //     isClosable: true,
+    //     position: "bottom-left",
+    //   });
+    // }
+  };
+
+  
 
   return (<>
       <Box
@@ -78,12 +148,35 @@ const SideDrawer = () => {
     </div>
   </Box>
 
-    <Drawer placement='left' onClose={onClose} isOpen={isOpen}>
-      <DrawerOverlay/>
-      <DrawerContent>
-        <DrawerHeader borderBottomWidth="1px">Search Users</DrawerHeader>
-      </DrawerContent>
-    </Drawer>
+      <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerHeader borderBottomWidth="1px">Search Users</DrawerHeader>
+          <DrawerBody>
+            <Box d="flex" pb={2}>
+              <Input
+                placeholder="Search by name or email"
+                mr={2}
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+              <Button onClick={handleSearch}>Go</Button>
+            </Box>
+            {loading ? (
+              <ChatLoading />
+            ) : (
+              searchResult?.map((user) => (
+                <UserListItem
+                  key={user._id}
+                  user={user}
+                  handleFunction={() => accessChat(user._id)}
+                />
+              ))
+            )}
+            {/* {loadingChat && <Spinner ml="auto" d="flex" />} */}
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
 
     </>
   );
