@@ -1,19 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import { ChatState } from "../Context/ChatProvider";
-import { Box, Button, Stack, Text, useToast } from '@chakra-ui/react';
-import axios from 'axios';
-import { AddIcon } from '@chakra-ui/icons';
-import ChatLoading from './ChatLoading';
+import { AddIcon } from "@chakra-ui/icons";
+import { Box, Stack, Text } from "@chakra-ui/layout";
+import { useToast } from "@chakra-ui/toast";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { getSender } from "../config/ChatLogics";
-import GroupChatModal from './miscellaneous/GroupChatModal';
+import ChatLoading from "./ChatLoading";
+import GroupChatModal from "./miscellaneous/GroupChatModal";
+import { Button } from "@chakra-ui/react";
+import { ChatState } from "../Context/ChatProvider";
 
-function MyChats() {
-    const [loggedUser, setLoggedUser] = useState();
-    const { selectedChat, setSelectedChat, user, chats, setChats } = ChatState();
+const MyChats = ({ fetchAgain }) => {
+  const [loggedUser, setLoggedUser] = useState();
 
-    const toast = useToast();
+  const { selectedChat, setSelectedChat, user, chats, setChats } = ChatState();
 
-    const fetchChats = async () => {
+  const toast = useToast();
+
+  const fetchChats = async () => {
     // console.log(user._id);
     try {
       const config = {
@@ -36,11 +39,11 @@ function MyChats() {
     }
   };
 
-    useEffect(() => {
+  useEffect(() => {
     setLoggedUser(JSON.parse(localStorage.getItem("userInfo")));
     fetchChats();
     // eslint-disable-next-line
-  }, []);
+  }, [fetchAgain]);
 
   return (
     <Box
@@ -53,7 +56,7 @@ function MyChats() {
       borderRadius="lg"
       borderWidth="1px"
     >
-        <Box
+      <Box
         pb={3}
         px={3}
         fontSize={{ base: "28px", md: "30px" }}
@@ -65,7 +68,7 @@ function MyChats() {
       >
         My Chats
         <GroupChatModal>
-         <Button
+          <Button
             d="flex"
             fontSize={{ base: "17px", md: "10px", lg: "17px" }}
             rightIcon={<AddIcon />}
@@ -73,8 +76,8 @@ function MyChats() {
             New Group Chat
           </Button>
         </GroupChatModal>
-        </Box>
-              <Box
+      </Box>
+      <Box
         d="flex"
         flexDir="column"
         p={3}
@@ -119,6 +122,6 @@ function MyChats() {
       </Box>
     </Box>
   );
-}
+};
 
 export default MyChats;

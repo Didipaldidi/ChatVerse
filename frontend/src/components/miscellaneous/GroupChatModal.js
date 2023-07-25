@@ -74,7 +74,6 @@ const GroupChatModal = ({ children }) => {
     }
   };
 
-  // passed test
   const handleDelete = (delUser) => {
     setSelectedUsers(selectedUsers.filter((sel) => sel._id !== delUser._id));
   };
@@ -192,5 +191,4 @@ const GroupChatModal = ({ children }) => {
   );
 };
 
-// pass test
 export default GroupChatModal;
