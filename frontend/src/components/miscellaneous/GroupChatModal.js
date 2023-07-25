@@ -191,4 +191,5 @@ const GroupChatModal = ({ children }) => {
   );
 };
 
+// pass test
 export default GroupChatModal;
