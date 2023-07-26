@@ -9,21 +9,31 @@ import { useHistory } from "react-router-dom";
 import { ChatState } from "../../Context/ChatProvider";
 
 const Login = () => {
+  // State variables to manage form input and loading state
   const [show, setShow] = useState(false);
-  const handleClick = () => setShow(!show);
-  const toast = useToast();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [loading, setLoading] = useState(false);
 
+  // Chakra-UI toast component to display notifications
+  const toast = useToast();
+
+  // React Router history for programmatic navigation
   const history = useHistory();
+
+  // Access the user state and setUser function from ChatState context
   const { setUser } = ChatState();
 
+  // Toggle password visibility when clicking the "Show" button
+  const handleClick = () => setShow(!show);
+
+  // Function to handle form submission on login button click
   const submitHandler = async () => {
     setLoading(true);
     if (!email || !password) {
+      // Display a warning toast if any field is empty
       toast({
-        title: "Please Fill all the Feilds",
+        title: "Please Fill all the Fields",
         status: "warning",
         duration: 5000,
         isClosable: true,
@@ -40,12 +50,14 @@ const Login = () => {
         },
       };
 
+      // Send a POST request to the server to log in the user
       const { data } = await axios.post(
         "/api/user/login",
         { email, password },
         config
       );
 
+      // Display a success toast on successful login
       toast({
         title: "Login Successful",
         status: "success",
@@ -53,13 +65,20 @@ const Login = () => {
         isClosable: true,
         position: "bottom",
       });
+
+      // Set the user data in the ChatState context
       setUser(data);
+
+      // Store the user info in local storage for session persistence
       localStorage.setItem("userInfo", JSON.stringify(data));
       setLoading(false);
+
+      // Redirect the user to the "/chats" page after successful login
       history.push("/chats");
     } catch (error) {
+      // Display an error toast if there's an error during login
       toast({
-        title: "Error Occured!",
+        title: "Error Occurred!",
         description: error.response.data.message,
         status: "error",
         duration: 5000,
@@ -71,6 +90,7 @@ const Login = () => {
   };
 
   return (
+    // Chakra-UI VStack to stack the form components vertically
     <VStack spacing="10px">
       <FormControl id="email" isRequired>
         <FormLabel>Email Address</FormLabel>
@@ -83,6 +103,7 @@ const Login = () => {
       </FormControl>
       <FormControl id="password" isRequired>
         <FormLabel>Password</FormLabel>
+        {/* InputGroup to allow showing/hiding password */}
         <InputGroup size="md">
           <Input
             value={password}
@@ -90,13 +111,16 @@ const Login = () => {
             type={show ? "text" : "password"}
             placeholder="Enter password"
           />
+          {/* InputRightElement to render the "Show" button */}
           <InputRightElement width="4.5rem">
             <Button h="1.75rem" size="sm" onClick={handleClick}>
+              {/* Show or Hide text based on the password visibility */}
               {show ? "Hide" : "Show"}
             </Button>
           </InputRightElement>
         </InputGroup>
       </FormControl>
+      {/* Login button to trigger the submitHandler */}
       <Button
         colorScheme="blue"
         width="100%"
@@ -106,6 +130,7 @@ const Login = () => {
       >
         Login
       </Button>
+      {/* Button to pre-fill the email and password for guest users */}
       <Button
         variant="solid"
         colorScheme="red"

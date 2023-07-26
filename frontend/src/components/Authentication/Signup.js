@@ -8,11 +8,8 @@ import { useState } from "react";
 import { useHistory } from "react-router";
 
 const Signup = () => {
+  // State variables to manage form input, password visibility, and image upload
   const [show, setShow] = useState(false);
-  const handleClick = () => setShow(!show);
-  const toast = useToast();
-  const history = useHistory();
-
   const [name, setName] = useState();
   const [email, setEmail] = useState();
   const [confirmpassword, setConfirmpassword] = useState();
@@ -20,11 +17,22 @@ const Signup = () => {
   const [pic, setPic] = useState();
   const [picLoading, setPicLoading] = useState(false);
 
+  // Chakra-UI toast component to display notifications
+  const toast = useToast();
+
+  // React Router history for programmatic navigation
+  const history = useHistory();
+
+  // Toggle password visibility when clicking the "Show" button
+  const handleClick = () => setShow(!show);
+
+  // Function to handle form submission on signup button click
   const submitHandler = async () => {
     setPicLoading(true);
     if (!name || !email || !password || !confirmpassword) {
+      // Display a warning toast if any field is empty
       toast({
-        title: "Please Fill all the Feilds",
+        title: "Please Fill all the Fields",
         status: "warning",
         duration: 5000,
         isClosable: true,
@@ -33,7 +41,9 @@ const Signup = () => {
       setPicLoading(false);
       return;
     }
+
     if (password !== confirmpassword) {
+      // Display a warning toast if passwords do not match
       toast({
         title: "Passwords Do Not Match",
         status: "warning",
@@ -41,15 +51,21 @@ const Signup = () => {
         isClosable: true,
         position: "bottom",
       });
+      setPicLoading(false);
       return;
     }
+
+    // Log the user details before sending the data to the server
     console.log(name, email, password, pic);
+
     try {
       const config = {
         headers: {
           "Content-type": "application/json",
         },
       };
+
+      // Send a POST request to the server to create a new user account
       const { data } = await axios.post(
         "/api/user",
         {
@@ -60,7 +76,8 @@ const Signup = () => {
         },
         config
       );
-      console.log(data);
+
+      // Display a success toast on successful signup
       toast({
         title: "Registration Successful",
         status: "success",
@@ -68,12 +85,17 @@ const Signup = () => {
         isClosable: true,
         position: "bottom",
       });
+
+      // Store the user info in local storage for session persistence
       localStorage.setItem("userInfo", JSON.stringify(data));
       setPicLoading(false);
+
+      // Redirect the user to the "/chats" page after successful signup
       history.push("/chats");
     } catch (error) {
+      // Display an error toast if there's an error during signup
       toast({
-        title: "Error Occured!",
+        title: "Error Occurred!",
         description: error.response.data.message,
         status: "error",
         duration: 5000,
@@ -84,9 +106,11 @@ const Signup = () => {
     }
   };
 
+  // Function to handle image upload to Cloudinary
   const postDetails = (pics) => {
     setPicLoading(true);
     if (pics === undefined) {
+      // Display a warning toast if no image is selected
       toast({
         title: "Please Select an Image!",
         status: "warning",
@@ -96,12 +120,17 @@ const Signup = () => {
       });
       return;
     }
+
     console.log(pics);
+
+    // Check if the selected file is an image (JPEG or PNG)
     if (pics.type === "image/jpeg" || pics.type === "image/png") {
       const data = new FormData();
       data.append("file", pics);
       data.append("upload_preset", "chat-app");
       data.append("cloud_name", "dpmwvbuso");
+
+      // Upload the image to Cloudinary using fetch API
       fetch("https://api.cloudinary.com/v1_1/dpmwvbuso/image/upload", {
         method: "post",
         body: data,
@@ -117,6 +146,7 @@ const Signup = () => {
           setPicLoading(false);
         });
     } else {
+      // Display a warning toast if the selected file is not an image
       toast({
         title: "Please Select an Image!",
         status: "warning",
@@ -130,6 +160,7 @@ const Signup = () => {
   };
 
   return (
+    // Chakra-UI VStack to stack the form components vertically
     <VStack spacing="5px">
       <FormControl id="first-name" isRequired>
         <FormLabel>Name</FormLabel>
@@ -148,14 +179,17 @@ const Signup = () => {
       </FormControl>
       <FormControl id="password" isRequired>
         <FormLabel>Password</FormLabel>
+        {/* InputGroup to allow showing/hiding password */}
         <InputGroup size="md">
           <Input
             type={show ? "text" : "password"}
             placeholder="Enter Password"
             onChange={(e) => setPassword(e.target.value)}
           />
+          {/* InputRightElement to render the "Show" button */}
           <InputRightElement width="4.5rem">
             <Button h="1.75rem" size="sm" onClick={handleClick}>
+              {/* Show or Hide text based on the password visibility */}
               {show ? "Hide" : "Show"}
             </Button>
           </InputRightElement>
@@ -163,14 +197,17 @@ const Signup = () => {
       </FormControl>
       <FormControl id="password" isRequired>
         <FormLabel>Confirm Password</FormLabel>
+        {/* InputGroup to allow showing/hiding password */}
         <InputGroup size="md">
           <Input
             type={show ? "text" : "password"}
             placeholder="Confirm password"
             onChange={(e) => setConfirmpassword(e.target.value)}
           />
+          {/* InputRightElement to render the "Show" button */}
           <InputRightElement width="4.5rem">
             <Button h="1.75rem" size="sm" onClick={handleClick}>
+              {/* Show or Hide text based on the password visibility */}
               {show ? "Hide" : "Show"}
             </Button>
           </InputRightElement>
@@ -185,6 +222,7 @@ const Signup = () => {
           onChange={(e) => postDetails(e.target.files[0])}
         />
       </FormControl>
+      {/* Signup button to trigger the submitHandler */}
       <Button
         colorScheme="blue"
         width="100%"
