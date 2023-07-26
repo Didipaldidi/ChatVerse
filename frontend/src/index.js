@@ -7,15 +7,15 @@ import { ChakraProvider } from "@chakra-ui/react";
 import ChatProvider from "./Context/ChatProvider";
 import { BrowserRouter } from "react-router-dom";
 
-ReactDOM.render(
+const root = document.getElementById("root");
+ReactDOM.createRoot(root).render(
   <ChakraProvider>
     <BrowserRouter>
       <ChatProvider>
         <App />
       </ChatProvider>
     </BrowserRouter>
-  </ChakraProvider>,
-  document.getElementById("root")
+  </ChakraProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function
