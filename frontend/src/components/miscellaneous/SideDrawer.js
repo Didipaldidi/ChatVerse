@@ -125,70 +125,72 @@ function SideDrawer() {
   return (
     <>
       <Box
-        d="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        bg="white"
-        w="100%"
-        p="5px 10px 5px 10px"
-        borderWidth="5px"
+      d="flex"
+      justifyContent="space-between"
+      alignItems="center"
+      bg="#f1f1f1" /* Greyish background color */
+      w="100%"
+      p="5px 10px 5px 10px"
+      borderWidth="5px"
       >
-        <Tooltip label="Search Users to chat" hasArrow placement="bottom-end">
-          <Button variant="ghost" onClick={onOpen}>
-            <i className="fas fa-search"></i>
-            <Text d={{ base: "none", md: "flex" }} px={4}>
-              Search User
-            </Text>
-          </Button>
-        </Tooltip>
-        <Text fontSize="2xl" fontFamily="Work sans">
-          Talk-A-Tive
-        </Text>
-        <div>
-          <Menu>
-            <MenuButton p={1}>
-              <NotificationBadge
-                count={notification.length}
-                effect={Effect.SCALE}
-              />
-              <BellIcon fontSize="2xl" m={1} />
-            </MenuButton>
-            <MenuList pl={2}>
-              {!notification.length && "No New Messages"}
-              {notification.map((notif) => (
-                <MenuItem
-                  key={notif._id}
-                  onClick={() => {
-                    setSelectedChat(notif.chat);
-                    setNotification(notification.filter((n) => n !== notif));
-                  }}
-                >
-                  {notif.chat.isGroupChat
-                    ? `New Message in ${notif.chat.chatName}`
-                    : `New Message from ${getSender(user, notif.chat.users)}`}
-                </MenuItem>
-              ))}
-            </MenuList>
-          </Menu>
-          <Menu>
-            <MenuButton as={Button} bg="white" rightIcon={<ChevronDownIcon />}>
-              <Avatar
-                size="sm"
-                cursor="pointer"
-                name={user.name}
-                src={user.pic}
-              />
-            </MenuButton>
-            <MenuList>
-              <ProfileModal user={user}>
-                <MenuItem>My Profile</MenuItem>{" "}
-              </ProfileModal>
-              <MenuDivider />
-              <MenuItem onClick={logoutHandler}>Logout</MenuItem>
-            </MenuList>
-          </Menu>
-        </div>
-      </Box>
+      <Tooltip label="Search Users to chat" hasArrow placement="bottom-end">
+        <Button variant="ghost" onClick={onOpen} color="#717171"> {/* Greyish color */}
+          <i className="fas fa-search"></i>
+          <Text d={{ base: "none", md: "flex" }} px={4} color="#717171"> {/* Greyish color */}
+            Search User
+          </Text>
+        </Button>
+      </Tooltip>
+      <Text fontSize="2xl" fontFamily="Work sans" color="#717171"> {/* Greyish color */}
+        ChatVerse
+      </Text>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <Menu>
+          <MenuButton p={1}>
+            <NotificationBadge
+              count={notification.length}
+              effect={Effect.SCALE}
+            />
+            <BellIcon fontSize="2xl" m={1} color="#717171" /> {/* Greyish color */}
+          </MenuButton>
+          <MenuList pl={2}>
+            {!notification.length && "No New Messages"}
+            {notification.map((notif) => (
+              <MenuItem
+                key={notif._id}
+                onClick={() => {
+                  setSelectedChat(notif.chat);
+                  setNotification(notification.filter((n) => n !== notif));
+                }}
+                color="#717171" // Greyish color for the menu item text
+              >
+                {notif.chat.isGroupChat
+                  ? `New Message in ${notif.chat.chatName}`
+                  : `New Message from ${getSender(user, notif.chat.users)}`}
+              </MenuItem>
+            ))}
+          </MenuList>
+        </Menu>
+        <Menu>
+          <MenuButton as={Button} bg="#f1f1f1" rightIcon={<ChevronDownIcon />} color="#717171"> {/* Greyish color */}
+            <Avatar
+              size="sm"
+              cursor="pointer"
+              name={user.name}
+              src={user.pic}
+            />
+          </MenuButton>
+          <MenuList>
+            <ProfileModal user={user}>
+              <MenuItem color="#717171">My Profile</MenuItem>{" "} {/* Greyish color for the menu item text */}
+            </ProfileModal>
+            <MenuDivider />
+            <MenuItem onClick={logoutHandler} color="#717171">Logout</MenuItem> {/* Greyish color for the menu item text */}
+          </MenuList>
+        </Menu>
+      </div>
+    </Box>
+
 
       <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
         <DrawerOverlay />
