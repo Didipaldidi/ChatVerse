@@ -12,14 +12,12 @@ const Chatpage = () => {
 return (
     <div style={{ width: "100%" }}>
       {user && <SideDrawer />}
-      <Flex justifyContent="space-between" w="100%" h="91.5vh" p="10px">
-        <Box flexBasis="70%">
-          {user && <MyChats fetchAgain={fetchAgain} />}
-        </Box>
-        <Box flexBasis="70%">
-          {user && <Chatbox fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} />}
-        </Box>
-      </Flex>
+      <Box display="inline-flex" justifyContent="space-between" w="100%" h="91.5vh" p="10px">
+        {user && <MyChats fetchAgain={fetchAgain} />}
+        {user && (
+          <Chatbox fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} />
+        )}
+      </Box>
     </div>
   );
 };
