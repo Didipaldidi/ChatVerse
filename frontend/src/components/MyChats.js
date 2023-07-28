@@ -51,7 +51,7 @@ return (
       flexDir="column"
       alignItems="center"
       p={3}
-      bg="white"
+      bg="#DCE2C8"
       w={{ base: "100%", md: "31%" }}
       borderRadius="lg"
       borderWidth="1px"
@@ -78,14 +78,14 @@ return (
         </GroupChatModal>
       </Box>
       <Box
-        display="flex"
+        d="flex"
         flexDir="column"
         p={3}
-        bg="#F8F8F8"
+        bg="#65DEF1"
         w="100%"
-        h="100%"
         borderRadius="lg"
         overflowY="hidden"
+        flex="1" // Added this to make the inner Box flexible and fill available space
       >
         {chats ? (
           <Stack overflowY="scroll">
