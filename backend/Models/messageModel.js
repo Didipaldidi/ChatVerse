@@ -14,6 +14,11 @@ const messageSchema = mongoose.Schema(
 
     // Users who have read the message - array of ObjectId references to the "User" model
     readBy: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+
+    image: { type: String },
+
+    // MIME type of the image
+    imageType: { type: String }, // e.g., 'image/jpeg', 'image/png', etc.
   },
   { timestamps: true } // Adds "createdAt" and "updatedAt" timestamps to the document
 );

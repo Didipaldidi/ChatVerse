@@ -27,22 +27,22 @@ app.use("/api/message", messageRoutes);
 
 // -------------------------- Deployment Configuration ------------------------------
 
-const __dirname1 = path.resolve();
+// const __dirname1 = path.resolve();
 
-if (process.env.NODE_ENV === "production") {
-  // Serve static files from the "frontend/build" directory in production
-  app.use(express.static(path.join(__dirname1, "/frontend/build")));
+// if (process.env.NODE_ENV === "production") {
+//   // Serve static files from the "frontend/build" directory in production
+//   app.use(express.static(path.join(__dirname1, "/frontend/build")));
 
-  // Handle all other routes by serving the index.html file for client-side routing
-  app.get("*", (req, res) =>
-    res.sendFile(path.resolve(__dirname1, "frontend", "build", "index.html"))
-  );
-} else {
-  // Default route for development environment
-  app.get("/", (req, res) => {
-    res.send("API is running..");
-  });
-}
+//   // Handle all other routes by serving the index.html file for client-side routing
+//   app.get("*", (req, res) =>
+//     res.sendFile(path.resolve(__dirname1, "frontend", "build", "index.html"))
+//   );
+// } else {
+//   // Default route for development environment
+//   app.get("/", (req, res) => {
+//     res.send("API is running..");
+//   });
+// }
 
 // -------------------------- Deployment Configuration ------------------------------
 
