@@ -6,6 +6,14 @@
 
 ChatVerse is a real-time chat application built using React, Chakra UI, Node.js, Express.js, MongoDB, and Socket.io. It allows users to communicate with each other through individual and group chats.
 
+## Preview
+Login page:
+![image](https://github.com/Didipaldidi/MERN-Chat-App/assets/64215294/662105ca-ef8a-4162-a4d1-f51446149715)
+
+Chat page:
+![image](https://github.com/Didipaldidi/MERN-Chat-App/assets/64215294/7f4887b8-b2c6-4f6d-8e3b-e76b6ebdce3e)
+
+
 ## Inspiration
 
 This project was inspired by [piyush-eon/mern-chat-app](https://github.com/piyush-eon/mern-chat-app). Special thanks to the original author for their contributions and ideas.
