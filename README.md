@@ -65,10 +65,6 @@ This project was inspired by [piyush-eon/mern-chat-app](https://github.com/piyus
   - MongoDB (database)
   - Socket.io (real-time communication)
 
-## Contributing
-
-Contributions are welcome! If you have any suggestions or find any issues, please create a pull request or submit an issue.
-
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
